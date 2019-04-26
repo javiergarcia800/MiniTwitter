@@ -5,7 +5,7 @@ import com.example.minitwitter.common.Constantes;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MiniTwitterClient implements MiniTwitterService {
+public class MiniTwitterClient  {
 
     private static MiniTwitterClient instance = null;
     private MiniTwitterService miniTwitterService;
