@@ -3,6 +3,7 @@ package com.example.minitwitter.ui;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -76,8 +77,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void doToLogin() {
+
+        Log.i("MINITWITTER", "Entra a doToLogin");
+
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
+
+        Log.i("MINITWITTER", "Antes de if...");
 
         if (email.isEmpty()) {
             etEmail.setError("El email es requerido.");
@@ -85,29 +91,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             etPassword.setError("La contraseña es requerida");
         } else {
 
-            
+            Log.i("MINITWITTER", "Entra al else");
 
             RequestLogin requestLogin = new RequestLogin(email, password);
 
+            Log.i("MINITWITTER", "Amtes de login");
+
             Call<ResponseAuth> call = miniTwitterService.doLogin(requestLogin);
+
+            Log.i("MINITWITTER", "Despues de login");
 
             call.enqueue(new Callback<ResponseAuth>(){
 
                 @Override
                 public void onResponse(Call<ResponseAuth> call, Response<ResponseAuth> response) {
+
+                    Log.i("MINITWITTER", "Entra onResponse");
+
                     if (response.isSuccessful()) {
+
+                        Log.i("MINITWITTER", "response.isSuccessful()");
+
                         Toast.makeText(MainActivity.this, "Sesión iniciada correctamente.", Toast.LENGTH_SHORT);
                         Intent i = new Intent(MainActivity.this, DashboardActivity.class);
                         startActivity(i);
                         // Se destruye este activity para que no se pueda volver.
                         finish();
                     } else {
+
+                        Log.i("MINITWITTER", "else");
+
                         Toast.makeText(MainActivity.this, "Algo fue mal, revise sus datos de acceso", Toast.LENGTH_SHORT);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseAuth> call, Throwable t) {
+
+                    Log.i("MINITWITTER", "Entra a onFailure");
+
                     Toast.makeText(MainActivity.this, "Problemas de conexión. Inténtelo de nuevo.", Toast.LENGTH_SHORT);
                 }
             });
