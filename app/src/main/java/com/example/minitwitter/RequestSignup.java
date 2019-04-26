@@ -62,5 +62,5 @@ public class RequestSignup {
     public void setCode(String code) {
         this.code = code;
     }
-    
+
 }
