@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.minitwitter.R;
+import com.example.minitwitter.common.Constantes;
+import com.example.minitwitter.common.SharedPreferenceManager;
 import com.example.minitwitter.retrofit.MiniTwitterClient;
 import com.example.minitwitter.retrofit.MiniTwitterService;
 import com.example.minitwitter.retrofit.request.RequestLogin;
@@ -113,6 +115,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.i("MINITWITTER", "response.isSuccessful()");
 
                         Toast.makeText(MainActivity.this, "Sesión iniciada correctamente.", Toast.LENGTH_SHORT);
+
+
+                        SharedPreferenceManager.setSomeStringValue(Constantes.PREF_TOKEN, response.body().getToken());
+                        SharedPreferenceManager.setSomeStringValue(Constantes.PREF_USERNAME, response.body().getUsername());
+                        SharedPreferenceManager.setSomeStringValue(Constantes.PREF_EMAIL, response.body().getEmail());
+                        SharedPreferenceManager.setSomeStringValue(Constantes.PREF_PHOTOURL, response.body().getPhotoUrl());
+                        SharedPreferenceManager.setSomeStringValue(Constantes.PREF_CREATED, response.body().getCreated());
+                        SharedPreferenceManager.setSomeBooleanValue(Constantes.PREF_ACTIVE, response.body().getActive());
+
                         Intent i = new Intent(MainActivity.this, DashboardActivity.class);
                         startActivity(i);
                         // Se destruye este activity para que no se pueda volver.

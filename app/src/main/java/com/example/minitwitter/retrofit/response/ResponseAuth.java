@@ -81,7 +81,7 @@ public class ResponseAuth {
         this.created = created;
     }
 
-    public boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 

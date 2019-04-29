@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.minitwitter.common.Constantes;
+import com.example.minitwitter.common.SharedPreferenceManager;
 
 public class DashboardActivity extends AppCompatActivity {
     private TextView mTextMessage;
@@ -37,6 +41,9 @@ public class DashboardActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
+
+        String token = SharedPreferenceManager.getSomeStringValue(Constantes.PREF_TOKEN);
+        Toast.makeText(this, "Token: " + token, Toast.LENGTH_SHORT).show();
     }
 
 }
