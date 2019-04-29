@@ -42,8 +42,8 @@ public class DashboardActivity extends AppCompatActivity {
         mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
 
-        String token = SharedPreferenceManager.getSomeStringValue(Constantes.PREF_TOKEN);
-        Toast.makeText(this, "Token: " + token, Toast.LENGTH_SHORT).show();
+
+
     }
 
 }
