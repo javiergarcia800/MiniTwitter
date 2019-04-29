@@ -1,15 +1,12 @@
 package com.example.minitwitter.ui;
 
+import com.example.minitwitter.R;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.minitwitter.common.Constantes;
-import com.example.minitwitter.common.SharedPreferenceManager;
 
 public class DashboardActivity extends AppCompatActivity {
     private TextView mTextMessage;
@@ -19,17 +16,17 @@ public class DashboardActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            /*switch (item.getItemId()) {
+            switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_tweets_like:
                     mTextMessage.setText(R.string.title_dashboard);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_profile:
                     mTextMessage.setText(R.string.title_notifications);
                     return true;
-            }*/
+            }
             return false;
         }
     };
@@ -37,10 +34,13 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_dashboard);
+
+        getSupportActionBar().hide();
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         mTextMessage = findViewById(R.id.message);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
 
