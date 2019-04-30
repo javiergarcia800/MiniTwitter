@@ -1,6 +1,8 @@
 package com.example.minitwitter.ui;
 
 import com.example.minitwitter.R;
+import com.example.minitwitter.TweetListFragment;
+
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +40,10 @@ public class DashboardActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragmentContainer, new TweetListFragment())
+                .commit();
 
     }
 
