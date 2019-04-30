@@ -29,8 +29,7 @@ public class TweetListFragment extends Fragment {
 
     List<Tweet> tweetList;
 
-    AuthTwitterService authTwitterService;
-    AuthTwitterClient authTwitterClient;
+
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -78,7 +77,7 @@ public class TweetListFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            retrofitInit();
+            //retrofitInit();
             loadTweetData();
 
 
@@ -86,33 +85,14 @@ public class TweetListFragment extends Fragment {
         return view;
     }
 
-    private void retrofitInit() {
-        authTwitterClient = AuthTwitterClient.getInstance();
-        authTwitterService = authTwitterClient.getAuthTwitterService();
-    }
+
 
     private void loadTweetData() {
-        Call<List<Tweet>> call = authTwitterService.getAllTweets();
-        call.enqueue(new Callback<List<Tweet>>() {
-            @Override
-            public void onResponse(Call<List<Tweet>> call, Response<List<Tweet>> response) {
-                if (response.isSuccessful()) {
-                    tweetList = response.body();
-                    adapter = new MyTweetRecyclerViewAdapter(
-                            getActivity(),
-                            tweetList
-                    );
-                    recyclerView.setAdapter(adapter);
-                } else {
-                    Toast.makeText(getActivity(), "Algo ha ido mal", Toast.LENGTH_SHORT);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Tweet>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Error en la conexión.", Toast.LENGTH_SHORT);
-            }
-        });
+        adapter = new MyTweetRecyclerViewAdapter(
+                getActivity(),
+                tweetList
+        );
+        recyclerView.setAdapter(adapter);
 
     }
 
