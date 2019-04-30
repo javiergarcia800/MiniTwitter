@@ -24,6 +24,7 @@ public class NuevoTweetDialogFragment extends DialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.nuevo_tweet_full_dialog, container, false);
+        
         return view;
     }
 }

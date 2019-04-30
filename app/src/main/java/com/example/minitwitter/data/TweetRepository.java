@@ -1,15 +1,15 @@
 package com.example.minitwitter.data;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.widget.Toast;
 
-import com.example.minitwitter.MyTweetRecyclerViewAdapter;
 import com.example.minitwitter.common.MyApp;
 import com.example.minitwitter.retrofit.AuthTwitterClient;
 import com.example.minitwitter.retrofit.AuthTwitterService;
+import com.example.minitwitter.retrofit.request.RequestCreateTweet;
 import com.example.minitwitter.retrofit.response.Tweet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,7 +21,7 @@ public class TweetRepository {
     AuthTwitterService authTwitterService;
     AuthTwitterClient authTwitterClient;
 
-    LiveData<List<Tweet>> allTweets;
+    MutableLiveData<List<Tweet>> allTweets;
 
     public TweetRepository() {
         authTwitterClient = AuthTwitterClient.getInstance();
@@ -29,15 +29,17 @@ public class TweetRepository {
         allTweets = getAllTweets();
     }
 
-    public LiveData<List<Tweet>> getAllTweets() {
-        final MutableLiveData<List<Tweet>> data = new MutableLiveData<>();
+    public MutableLiveData<List<Tweet>> getAllTweets() {
+        if (allTweets == null) {
+            allTweets = new MutableLiveData<>();
+        }
 
         Call<List<Tweet>> call = authTwitterService.getAllTweets();
         call.enqueue(new Callback<List<Tweet>>() {
             @Override
             public void onResponse(Call<List<Tweet>> call, Response<List<Tweet>> response) {
                 if (response.isSuccessful()) {
-                    data.setValue(response.body());
+                    allTweets.setValue(response.body());
 
                 } else {
                     Toast.makeText(MyApp.getContext(), "Algo ha ido mal", Toast.LENGTH_SHORT);
@@ -50,7 +52,36 @@ public class TweetRepository {
             }
         });
 
-        return data;
+        return allTweets;
+    }
+
+    public void createTweet(String mensaje) {
+        RequestCreateTweet requestCreateTweet = new RequestCreateTweet(mensaje);
+        Call<Tweet> call = authTwitterService.createTweet(requestCreateTweet);
+
+        call.enqueue(new Callback<Tweet>() {
+            @Override
+            public void onResponse(Call<Tweet> call, Response<Tweet> response) {
+                if (response.isSuccessful()) {
+                    List<Tweet> listaClonada = new ArrayList<>();
+                    // Añadimos el nuevo tweet que nos llega del server.
+                    listaClonada.add(response.body());
+                    // Y copiamos los tweets anteriores.
+                    for (int i = 0; i<allTweets.getValue().size(); i++) {
+                        listaClonada.add(new Tweet(allTweets.getValue().get(i)));
+                    }
+
+                    allTweets.setValue(listaClonada);
+                } else {
+                    Toast.makeText(MyApp.getContext(), "Algo ha ido mal, inténtelo de nuevo", Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Tweet> call, Throwable t) {
+                Toast.makeText(MyApp.getContext(), "Error en la conexión, inténtelo de nuevo", Toast.LENGTH_SHORT);
+            }
+        });
 
     }
 

@@ -25,4 +25,8 @@ public class TweetViewModel extends AndroidViewModel {
         return tweets;
     }
 
+    public void insertTweet(String mensaje) {
+        tweetRepository.createTweet(mensaje);
+    }
+
 }

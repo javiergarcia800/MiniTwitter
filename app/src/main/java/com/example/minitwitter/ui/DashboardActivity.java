@@ -1,7 +1,6 @@
 package com.example.minitwitter.ui;
 
 import com.example.minitwitter.R;
-import com.example.minitwitter.TweetListFragment;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -11,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
 
 public class DashboardActivity extends AppCompatActivity {
 

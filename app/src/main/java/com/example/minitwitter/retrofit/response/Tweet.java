@@ -27,6 +27,13 @@ public class Tweet {
     public Tweet() {
     }
 
+    public Tweet(Tweet nuevoTweet) {
+        this.id = nuevoTweet.id;
+        this.mensaje = nuevoTweet.getMensaje();
+        this.likes = nuevoTweet.getLikes();
+        this.user = nuevoTweet.getUser();
+    }
+
     public Tweet(Integer id, String mensaje, List<Like> likes, User user) {
         this.id = id;
         this.mensaje = mensaje;
