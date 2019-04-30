@@ -33,7 +33,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/imageViewToolbarPhoto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -41,7 +42,7 @@
                         android:layout_marginTop="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_account_circle_gris_24dp" />
+                        tools:src="@drawable/ic_account_circle_gris_24dp" />
 
                     <TextView
                         android:id="@+id/textViewToolbar"
@@ -83,6 +84,7 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/nav_view"
+        app:labelVisibilityMode="unlabeled"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
