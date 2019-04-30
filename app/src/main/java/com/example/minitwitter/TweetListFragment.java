@@ -1,7 +1,11 @@
 package com.example.minitwitter;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.minitwitter.data.TweetViewModel;
 import com.example.minitwitter.retrofit.AuthTwitterClient;
 import com.example.minitwitter.retrofit.AuthTwitterService;
 import com.example.minitwitter.retrofit.response.Tweet;
@@ -29,6 +34,7 @@ public class TweetListFragment extends Fragment {
 
     List<Tweet> tweetList;
 
+    TweetViewModel tweetViewModel;
 
 
     // TODO: Customize parameter argument names
@@ -57,6 +63,9 @@ public class TweetListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        tweetViewModel = ViewModelProviders.of(getActivity())
+                .get(TweetViewModel.class);
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -77,10 +86,16 @@ public class TweetListFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            //retrofitInit();
+
+
+            adapter = new MyTweetRecyclerViewAdapter(
+                    getActivity(),
+                    tweetList
+            );
+            recyclerView.setAdapter(adapter);
+
+
             loadTweetData();
-
-
         }
         return view;
     }
@@ -88,12 +103,13 @@ public class TweetListFragment extends Fragment {
 
 
     private void loadTweetData() {
-        adapter = new MyTweetRecyclerViewAdapter(
-                getActivity(),
-                tweetList
-        );
-        recyclerView.setAdapter(adapter);
-
+        tweetViewModel.getTweets().observe(getActivity(), new Observer<List<Tweet>>() {
+            @Override
+            public void onChanged(@Nullable List<Tweet> tweets) {
+                tweetList = tweets;
+                adapter.setData(tweetList);
+            }
+        });
     }
 
 }
