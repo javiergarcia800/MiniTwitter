@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,7 @@ public class TweetListFragment extends Fragment {
 
     RecyclerView recyclerView;
     MyTweetRecyclerViewAdapter adapter;
-
+    SwipeRefreshLayout swipeRefreshLayout;
     List<Tweet> tweetList;
 
     TweetViewModel tweetViewModel;
@@ -70,9 +71,20 @@ public class TweetListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tweet_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+
             Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            recyclerView =  view.findViewById(R.id.list);
+            swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
+            swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAzul));
+
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    loadNewData();
+                }
+            });
+
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -89,10 +101,9 @@ public class TweetListFragment extends Fragment {
 
 
             loadTweetData();
-        }
+
         return view;
     }
-
 
 
     private void loadTweetData() {
@@ -101,6 +112,18 @@ public class TweetListFragment extends Fragment {
             public void onChanged(@Nullable List<Tweet> tweets) {
                 tweetList = tweets;
                 adapter.setData(tweetList);
+            }
+        });
+    }
+
+    private void loadNewData() {
+        tweetViewModel.getNewTweets().observe(getActivity(), new Observer<List<Tweet>>() {
+            @Override
+            public void onChanged(@Nullable List<Tweet> tweets) {
+                tweetList = tweets;
+                swipeRefreshLayout.setRefreshing(false);
+                adapter.setData(tweetList);
+                tweetViewModel.getNewTweets().removeObserver(this);
             }
         });
     }
