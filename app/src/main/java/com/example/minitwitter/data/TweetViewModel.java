@@ -45,6 +45,10 @@ public class TweetViewModel extends AndroidViewModel {
         tweetRepository.createTweet(mensaje);
     }
 
+    public void deleteTweet(int idTweet) {
+        tweetRepository.deleteTweet(idTweet);
+    }
+
     public void likeTweet(int idTweet) {
         tweetRepository.likeTweet(idTweet);
     }
