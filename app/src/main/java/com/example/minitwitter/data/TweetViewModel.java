@@ -13,6 +13,7 @@ public class TweetViewModel extends AndroidViewModel {
 
     private TweetRepository tweetRepository;
     private LiveData<List<Tweet>> tweets;
+    private LiveData<List<Tweet>> favTweets;
 
     public TweetViewModel(@NonNull Application application) {
         super(application);
@@ -25,9 +26,19 @@ public class TweetViewModel extends AndroidViewModel {
         return tweets;
     }
 
+    public LiveData<List<Tweet>> getFavTweets() {
+        favTweets = tweetRepository.getFavsTweets();
+        return favTweets;
+    }
+
     public LiveData<List<Tweet>> getNewTweets(){
         tweets = tweetRepository.getAllTweets();
         return tweets;
+    }
+
+    public LiveData<List<Tweet>> getNewFavTweets(){
+        getNewTweets();
+        return getFavTweets();
     }
 
     public void insertTweet(String mensaje) {
@@ -37,5 +48,7 @@ public class TweetViewModel extends AndroidViewModel {
     public void likeTweet(int idTweet) {
         tweetRepository.likeTweet(idTweet);
     }
+
+
 
 }

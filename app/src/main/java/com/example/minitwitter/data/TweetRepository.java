@@ -3,13 +3,17 @@ package com.example.minitwitter.data;
 import android.arch.lifecycle.MutableLiveData;
 import android.widget.Toast;
 
+import com.example.minitwitter.common.Constantes;
 import com.example.minitwitter.common.MyApp;
+import com.example.minitwitter.common.SharedPreferenceManager;
 import com.example.minitwitter.retrofit.AuthTwitterClient;
 import com.example.minitwitter.retrofit.AuthTwitterService;
 import com.example.minitwitter.retrofit.request.RequestCreateTweet;
+import com.example.minitwitter.retrofit.response.Like;
 import com.example.minitwitter.retrofit.response.Tweet;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,11 +26,15 @@ public class TweetRepository {
     AuthTwitterClient authTwitterClient;
 
     MutableLiveData<List<Tweet>> allTweets;
+    MutableLiveData<List<Tweet>> favTweets;
+
+    String userName;
 
     public TweetRepository() {
         authTwitterClient = AuthTwitterClient.getInstance();
         authTwitterService = authTwitterClient.getAuthTwitterService();
         allTweets = getAllTweets();
+        userName = SharedPreferenceManager.getSomeStringValue(Constantes.PREF_USERNAME);
     }
 
     public MutableLiveData<List<Tweet>> getAllTweets() {
@@ -55,6 +63,34 @@ public class TweetRepository {
         return allTweets;
     }
 
+    public MutableLiveData<List<Tweet>> getFavsTweets() {
+
+
+        if (favTweets == null) {
+            favTweets = new MutableLiveData<>();
+        }
+
+        List<Tweet> newFavList = new ArrayList<>();
+        Iterator itTweets = allTweets.getValue().iterator();
+
+        while(itTweets.hasNext()) {
+            Tweet current = (Tweet)itTweets.next();
+            Iterator itLikes = current.getLikes().iterator();
+            boolean enc = false;
+            while(itLikes.hasNext() && !enc) {
+                Like like = (Like)itLikes.next();
+                if (like.getUsername().equals(userName)) {
+                    enc = true;
+                    newFavList.add(current);
+                }
+            }
+        }
+
+        favTweets.setValue(newFavList);
+
+        return favTweets;
+    }
+
     public void createTweet(String mensaje) {
         RequestCreateTweet requestCreateTweet = new RequestCreateTweet(mensaje);
         Call<Tweet> call = authTwitterService.createTweet(requestCreateTweet);
@@ -72,6 +108,8 @@ public class TweetRepository {
                     }
 
                     allTweets.setValue(listaClonada);
+
+
                 } else {
                     Toast.makeText(MyApp.getContext(), "Algo ha ido mal, inténtelo de nuevo", Toast.LENGTH_SHORT);
                 }
@@ -106,6 +144,9 @@ public class TweetRepository {
                     }
 
                     allTweets.setValue(listaClonada);
+
+                    getFavsTweets();
+
                 } else {
                     Toast.makeText(MyApp.getContext(), "Algo ha ido mal, inténtelo de nuevo", Toast.LENGTH_SHORT);
                 }
