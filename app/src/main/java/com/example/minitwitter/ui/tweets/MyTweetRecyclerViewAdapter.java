@@ -56,7 +56,8 @@ public class MyTweetRecyclerViewAdapter extends RecyclerView.Adapter<MyTweetRecy
             String photo = holder.mItem.getUser().getPhotoUrl();
             if (!photo.equals("")) {
                 Glide.with(ctx)
-                        .load("https://www.minitweeter.com/apiv1/uploads/photos/" + photo)
+                        //.load("https://www.minitweeter.com/apiv1/uploads/photos/" + photo)
+                        .load(Constantes.API_MINITWITTER_FILES_URL + photo)
                         .into(holder.ivAvatar);
             }
 

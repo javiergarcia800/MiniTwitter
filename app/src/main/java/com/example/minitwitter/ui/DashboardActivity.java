@@ -1,6 +1,7 @@
 package com.example.minitwitter.ui;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.minitwitter.R;
 import com.example.minitwitter.common.Constantes;
 import com.example.minitwitter.common.SharedPreferenceManager;
@@ -94,6 +95,9 @@ public class DashboardActivity extends AppCompatActivity {
         if (!photoUrl.isEmpty()) {
             Glide.with(this)
                     .load(Constantes.API_MINITWITTER_FILES_URL + photoUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .centerCrop()
+                    .skipMemoryCache(true)
                     .into(ivAvatar);
         }
 
@@ -101,3 +105,4 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 }
+
