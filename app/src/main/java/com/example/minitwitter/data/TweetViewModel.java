@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.minitwitter.retrofit.response.Tweet;
-import com.example.minitwitter.ui.BottomModalTweetFragment;
+import com.example.minitwitter.ui.tweets.BottomModalTweetFragment;
 
 import java.util.List;
 

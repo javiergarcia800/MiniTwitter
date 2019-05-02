@@ -4,6 +4,9 @@ import com.bumptech.glide.Glide;
 import com.example.minitwitter.R;
 import com.example.minitwitter.common.Constantes;
 import com.example.minitwitter.common.SharedPreferenceManager;
+import com.example.minitwitter.ui.profile.ProfileFragment;
+import com.example.minitwitter.ui.tweets.NuevoTweetDialogFragment;
+import com.example.minitwitter.ui.tweets.TweetListFragment;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -39,6 +42,7 @@ public class DashboardActivity extends AppCompatActivity {
                     fab.hide();
                     break;
                 case R.id.navigation_profile:
+                    f = new ProfileFragment();
                     fab.hide();
                     break;
             }
