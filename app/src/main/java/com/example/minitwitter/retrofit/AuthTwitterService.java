@@ -43,7 +43,7 @@ public interface AuthTwitterService {
     Call<ResponseUserProfile> updateProfile(@Body RequestUserProfile requestUserProfile);
 
     @Multipart
-    @POST("/users/uploadprofilephoto")
+    @POST("users/uploadprofilephoto")
     Call<ResponseUploadPhoto> uploadProfilePhoto(@Part("file\"; filename=\"photo.jpeg\" ") RequestBody file);
 
 }

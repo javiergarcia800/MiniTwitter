@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
+        profileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
     }
 
     @Override
@@ -133,6 +133,22 @@ public class ProfileFragment extends Fragment {
                 if (!loadingData) {
                     btnSave.setEnabled(true);
                     Toast.makeText(getActivity(), "Datos guardados correctamente", Toast.LENGTH_SHORT);
+                }
+            }
+        });
+
+
+        profileViewModel.photoProfile.observe(getActivity(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String photo) {
+                if (!photo.isEmpty()) {
+                    Glide.with(getActivity())
+                            .load(Constantes.API_MINITWITTER_FILES_URL + photo)
+                            .dontAnimate()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .centerCrop()
+                            .skipMemoryCache(true)
+                            .into(ivAvatar);
                 }
             }
         });
