@@ -94,6 +94,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        ivAvatar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+
         // ViewModel
         profileViewModel.userProfile.observe(getActivity(), new Observer<ResponseUserProfile>(){
 
