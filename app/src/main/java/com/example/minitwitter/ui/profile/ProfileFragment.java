@@ -1,5 +1,6 @@
 package com.example.minitwitter.ui.profile;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -21,6 +22,10 @@ import com.example.minitwitter.data.ProfileViewModel;
 import com.example.minitwitter.R;
 import com.example.minitwitter.retrofit.request.RequestUserProfile;
 import com.example.minitwitter.retrofit.response.ResponseUserProfile;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.listener.single.CompositePermissionListener;
+import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 public class ProfileFragment extends Fragment {
 
@@ -35,6 +40,7 @@ public class ProfileFragment extends Fragment {
     Button btnChangePassword;
 
     boolean loadingData = true;
+    PermissionListener allPermissionsListener;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -97,7 +103,9 @@ public class ProfileFragment extends Fragment {
         ivAvatar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                
+                // Invocar a la selección de la fotografia.
+                // Invocamos al método de comprobación de permisos.
+                checkPermissions();
             }
         });
 
@@ -132,6 +140,24 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
+    private void checkPermissions() {
+        PermissionListener dialogOnDeniedPermissionListener = DialogOnDeniedPermissionListener.Builder.withContext(getActivity())
+                .withTitle("Permisos")
+                .withMessage("Los permisos solicitados son necesarios para poder seleccionar una foto de perfil.")
+                .withButtonText("Aceptar")
+                .withIcon(R.mipmap.ic_launcher)
+                .build();
+        allPermissionsListener = new CompositePermissionListener(
+                (PermissionListener) getActivity(),
+                dialogOnDeniedPermissionListener
+        );
+
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(allPermissionsListener)
+                .check();
+
+    }
 
 
 }

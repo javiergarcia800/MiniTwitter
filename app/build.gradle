@@ -46,4 +46,6 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
 
+    // Librería para permisos
+    implementation 'com.karumi:dexter:5.0.0'
 }

@@ -8,6 +8,11 @@ import com.example.minitwitter.common.SharedPreferenceManager;
 import com.example.minitwitter.ui.profile.ProfileFragment;
 import com.example.minitwitter.ui.tweets.NuevoTweetDialogFragment;
 import com.example.minitwitter.ui.tweets.TweetListFragment;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -19,8 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements PermissionListener {
 
     FloatingActionButton fab;
     ImageView ivAvatar;
@@ -104,5 +110,19 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onPermissionGranted(PermissionGrantedResponse response) {
+        // Invocamos la selección de fotos de la galería.
+    }
+
+    @Override
+    public void onPermissionDenied(PermissionDeniedResponse response) {
+        Toast.makeText(this, "No se puede seleccionar la fotografía ", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+    }
 }
 
