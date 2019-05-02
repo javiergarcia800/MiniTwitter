@@ -9,6 +9,7 @@ import com.example.minitwitter.common.SharedPreferenceManager;
 import com.example.minitwitter.retrofit.AuthTwitterClient;
 import com.example.minitwitter.retrofit.AuthTwitterService;
 import com.example.minitwitter.retrofit.request.RequestCreateTweet;
+import com.example.minitwitter.retrofit.request.RequestUserProfile;
 import com.example.minitwitter.retrofit.response.Like;
 import com.example.minitwitter.retrofit.response.ResponseUserProfile;
 import com.example.minitwitter.retrofit.response.Tweet;
@@ -64,6 +65,26 @@ public class ProfileRepository {
     }
 
 
+    public void updateProfile(RequestUserProfile requestUserProfile) {
+        Call<ResponseUserProfile> call = authTwitterService.updateProfile(requestUserProfile);
+        call.enqueue(new Callback<ResponseUserProfile>() {
+            @Override
+            public void onResponse(Call<ResponseUserProfile> call, Response<ResponseUserProfile> response) {
+                if (response.isSuccessful()) {
+                    userProfile.setValue(response.body());
+                } else {
+                    Toast.makeText(MyApp.getContext(), "Algo ha ido mal", Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseUserProfile> call, Throwable t) {
+                Toast.makeText(MyApp.getContext(), "Error en la conexión", Toast.LENGTH_SHORT);
+            }
+        });
+
+
+    }
 
 
 
